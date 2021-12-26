@@ -52,7 +52,7 @@ export async function resumeOrDeploy<T extends Deployment>(
 }
 
 export async function waitAndValidateDeployment(provider: EthereumProvider, deployment: Deployment): Promise<void> {
-  const { txHash, address } = deployment;
+  const { txHash } = deployment;
 
   // Poll for 60 seconds with a 5 second poll interval.
   // TODO: Make these parameters configurable.
@@ -72,7 +72,10 @@ export async function waitAndValidateDeployment(provider: EthereumProvider, depl
       debug('verifying deployment tx mined', txHash);
       const receipt = await getTransactionReceipt(provider, txHash);
       if (receipt && isReceiptSuccessful(receipt)) {
-        debug('succeeded verifying deployment tx mined', txHash);
+        debug('succeeded verifying deployment tx mined', txHash, receipt.contractAddress);
+        if (receipt.contractAddress !== null) {
+          deployment.address = receipt.contractAddress;          
+        }
         break;
       } else if (receipt) {
         debug('tx was reverted', txHash);
@@ -84,16 +87,21 @@ export async function waitAndValidateDeployment(provider: EthereumProvider, depl
     }
   }
 
-  debug('verifying code in target address', address);
+  debug('verifying code in target address', deployment.address);
   const startTime = Date.now();
-  while (!(await hasCode(provider, address))) {
+  while (!(await hasCode(provider, deployment.address))) {
     const elapsedTime = Date.now() - startTime;
-    if (elapsedTime >= pollTimeout || txHash === undefined) {
+    console.log(elapsedTime, pollTimeout);
+    if (elapsedTime >= pollTimeout) {
+      // A timeout is NOT an InvalidDeployment
+      throw new TransactionMinedTimeout(deployment);
+    }
+    if (txHash === undefined) {
       throw new InvalidDeployment(deployment);
     }
     await sleep(pollInterval);
   }
-  debug('code in target address found', address);
+  debug('code in target address found', deployment.address);
 }
 
 export class TransactionMinedTimeout extends Error {

@@ -26,6 +26,10 @@ interface EthereumTransactionReceipt {
   transactionIndex: string;
 }
 
+interface EthereumDeployContractTransactionReceipt extends EthereumTransactionReceipt {
+  contractAddress: string | null;
+}
+
 export async function getNetworkId(provider: EthereumProvider): Promise<string> {
   return provider.send('net_version', []);
 }
@@ -84,8 +88,8 @@ export async function getTransactionByHash(
 export async function getTransactionReceipt(
   provider: EthereumProvider,
   txHash: string,
-): Promise<EthereumTransactionReceipt | null> {
-  const receipt = await provider.send('eth_getTransactionReceipt', [txHash]);
+): Promise<EthereumDeployContractTransactionReceipt | null> {
+  const receipt = (await provider.send('eth_getTransactionReceipt', [txHash])) as EthereumDeployContractTransactionReceipt;
   if (receipt?.status) {
     receipt.status = receipt.status.match(/^0x0+$/) ? '0x0' : receipt.status.replace(/^0x0+/, '0x');
   }

@@ -31,7 +31,7 @@
     "rimraf": "^3.0.2"
   },
   "dependencies": {
-    "@openzeppelin/upgrades-core": "^1.10.0",
+    "@openzeppelin/upgrades-core": "file:../core",
     "chalk": "^4.1.0"
   },
   "peerDependencies": {
