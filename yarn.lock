@@ -2438,6 +2438,18 @@
     lodash.startcase "^4.4.0"
     minimist "^1.2.0"
 
+"@openzeppelin/upgrades-core@file:packages/core":
+  version "1.10.0"
+  dependencies:
+    bn.js "^5.1.2"
+    cbor "^8.0.0"
+    chalk "^4.1.0"
+    compare-versions "^4.0.0"
+    debug "^4.1.1"
+    ethereumjs-util "^7.0.3"
+    proper-lockfile "^4.1.1"
+    solidity-ast "^0.4.15"
+
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"
@@ -3685,7 +3697,6 @@
 
 "@zondax/filecoin-signing-tools@github:Digital-MOB-Filecoin/filecoin-signing-tools-js":
   version "0.2.0"
-  uid "8f8e92157cac2556d35cab866779e9a8ea8a4e25"
   resolved "https://codeload.github.com/Digital-MOB-Filecoin/filecoin-signing-tools-js/tar.gz/8f8e92157cac2556d35cab866779e9a8ea8a4e25"
   dependencies:
     axios "^0.20.0"

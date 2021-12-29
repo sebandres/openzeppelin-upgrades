@@ -61,6 +61,7 @@ export function makeDeployProxy(hre: HardhatRuntimeEnvironment): DeployFunction 
         await contractDeployment.deployTransaction.wait();
 
       impl = contractAddress;
+      
     } else {
       const deployedImpl = await deployProxyImpl(hre, ImplFactory, opts);
       impl = deployedImpl.impl;

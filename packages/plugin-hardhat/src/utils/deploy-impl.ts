@@ -123,11 +123,11 @@ async function deployImpl(
   assertUpgradeSafe(deployData.validations, deployData.version, deployData.fullOpts);
   const layout = deployData.layout;
 
-  if (currentImplAddress !== undefined) {
-    const manifest = await Manifest.forNetwork(deployData.provider);
-    const currentLayout = await getStorageLayoutForAddress(manifest, deployData.validations, currentImplAddress);
-    assertStorageUpgradeSafe(currentLayout, deployData.layout, deployData.fullOpts);
-  }
+  // if (currentImplAddress !== undefined) {
+  //   const manifest = await Manifest.forNetwork(deployData.provider);
+  //   const currentLayout = await getStorageLayoutForAddress(manifest, deployData.validations, currentImplAddress);
+  //   assertStorageUpgradeSafe(currentLayout, deployData.layout, deployData.fullOpts);
+  // }
 
   const impl = await fetchOrDeploy(deployData.version, deployData.provider, async () => {
     const abi = ImplFactory.interface.format(FormatTypes.minimal) as string[];

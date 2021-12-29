@@ -56,7 +56,7 @@ export async function waitAndValidateDeployment(provider: EthereumProvider, depl
 
   // Poll for 60 seconds with a 5 second poll interval.
   // TODO: Make these parameters configurable.
-  const pollTimeout = 60e3;
+  const pollTimeout = 120e3;
   const pollInterval = 5e3;
 
   if (txHash !== undefined) {
