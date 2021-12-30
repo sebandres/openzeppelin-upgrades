@@ -1,7 +1,7 @@
 import type { HardhatRuntimeEnvironment } from 'hardhat/types';
 import type { ContractFactory, Contract } from 'ethers';
 
-import { Manifest, fetchOrDeployAdmin, logWarning, ProxyDeployment, Deployment } from '@openzeppelin/upgrades-core';
+import { Manifest, fetchOrDeployAdmin, logWarning, ProxyDeployment, Deployment, hasCode } from '@openzeppelin/upgrades-core';
 
 import {
   DeployProxyOptions,
@@ -50,7 +50,9 @@ export function makeDeployProxy(hre: HardhatRuntimeEnvironment): DeployFunction 
         constructorArgs: []
       });
 
-      let contractDeployment = Object.assign({ kind }, await deployContract({
+      // only try to deploy if it hasn't been deployed yet
+      if (!(await hasCode(provider, contractAddress))) {
+        let contractDeployment = Object.assign({ kind }, await deployContract({
           salt: opts.deployFactorySalt,
           factory: opts.deployFactory,
           contractBytecode: bytecode,
@@ -59,7 +61,7 @@ export function makeDeployProxy(hre: HardhatRuntimeEnvironment): DeployFunction 
         }));
 
         await contractDeployment.deployTransaction.wait();
-
+      }
       impl = contractAddress;
       
     } else {
